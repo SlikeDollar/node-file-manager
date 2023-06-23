@@ -2,6 +2,7 @@ import { stdin, stdout } from "process";
 import * as readline from "node:readline/promises";
 import { logCurrentPath } from "./helpers/log-current-path.js";
 import { goOneDirectoryUp } from "./operations/up.js";
+import { ls } from "./operations/ls.js";
 
 function onStartUp(username) {
   console.log(`Welcome to the File Manager, ${username}`);
@@ -13,6 +14,10 @@ function onRlLine(data) {
   if (command.startsWith("up")) {
     goOneDirectoryUp();
   }
+  else if (command.startsWith("ls")) {
+    ls();
+  }
+
   logCurrentPath();
 }
 
