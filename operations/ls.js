@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import { cwd } from "process";
-import { Errors } from "../constants/errors";
+import { Errors } from "../constants/errors.js";
+import { dir, warn } from "console";
 
 export async function ls() {
   const currentPath = cwd();
@@ -15,7 +16,21 @@ export async function ls() {
         };
       })
     );
-    console.table(directoryFiles);
+
+    const sortedDirectoryFiles = directoryFiles.sort((a, b) => {
+
+      if (a.type === "directory" && b.type !== "directory") {
+        return -1;
+      }
+
+      if (a.type !== "directory" && b.type === "directory") {
+        return 1;
+      }
+
+      return a.name.localeCompare(b.name);
+    });
+
+    console.table(sortedDirectoryFiles);
   } catch (err) {
     console.error(Errors.operationError);
   }
