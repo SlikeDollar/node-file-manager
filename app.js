@@ -1,18 +1,31 @@
-import { stdin, stdout } from "process";
+import { cwd, stdin, stdout } from "process";
 import * as readline from "node:readline/promises";
 import { logCurrentPath } from "./helpers/log-current-path.js";
-import { goOneDirectoryUp } from "./operations/up.js";
+import { operations } from "./operations/operations.js";
+import { Errors } from "./constants/errors.js";
 
 function onStartUp(username) {
   console.log(`Welcome to the File Manager, ${username}`);
   logCurrentPath();
 }
 
-function onRlLine(data) {
-  const command = data.trim();
-  if (command.startsWith("up")) {
-    goOneDirectoryUp();
+function parseCommnad(data) {
+  const command = data.trim().split(/\s/g);
+  return {
+    operation: command[0],
+    args: command.slice(1),
   }
+}
+
+async function onRlLine(data) {
+  const command = parseCommnad(data);
+  if (operations.get(command.operation)) {
+    const operationFunc = operations.get(command.operation);
+    operationFunc(command.args);
+  } else {
+    Errors.inputError();
+  }
+
   logCurrentPath();
 }
 
