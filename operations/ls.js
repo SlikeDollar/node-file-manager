@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import { cwd } from "process";
 import { Errors } from "../constants/errors.js";
-import { dir, warn } from "console";
+import { readdir } from "fs";
 
 export async function ls() {
   const currentPath = cwd();
@@ -32,6 +32,8 @@ export async function ls() {
 
     console.table(sortedDirectoryFiles);
   } catch (err) {
-    console.error(Errors.operationError);
+    Errors.operationError();
   }
 }
+
+

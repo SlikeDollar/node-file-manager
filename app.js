@@ -1,10 +1,7 @@
 import { cwd, stdin, stdout } from "process";
 import * as readline from "node:readline/promises";
 import { logCurrentPath } from "./helpers/log-current-path.js";
-import { goOneDirectoryUp } from "./operations/up.js";
-import { ls } from "./operations/ls.js";
-import { cd } from "./operations/cd.js";
-import path from "path";
+import { operations } from "./operations/operations.js";
 import { Errors } from "./constants/errors.js";
 
 function onStartUp(username) {
@@ -12,22 +9,21 @@ function onStartUp(username) {
   logCurrentPath();
 }
 
-async function onRlLine(data) {
+function parseCommnad(data) {
   const command = data.trim().split(/\s/g);
+  return {
+    operation: command[0],
+    args: command.slice(1),
+  }
+}
 
-  switch (command[0]) {
-    case "up":
-      goOneDirectoryUp();
-      break;
-    case "ls":
-      ls();
-      break;
-    case "cd":
-      await cd(command[1]);
-      break;
-    case "cat":
-      console.log(":3 - cat");
-      break;
+async function onRlLine(data) {
+  const command = parseCommnad(data);
+  if (operations.get(command.operation)) {
+    const operationFunc = operations.get(command.operation);
+    operationFunc(command.args);
+  } else {
+    Errors.inputError();
   }
 
   logCurrentPath();
