@@ -1,27 +1,10 @@
 import { stdin, stdout } from "process";
 import * as readline from "node:readline/promises";
-import { logCurrentPath } from "./helpers/log-current-path.js";
-import { goOneDirectoryUp } from "./operations/up.js";
+import { onStartUp } from "./events/onStartUp.js";
+import { onExit } from "./events/onExit.js";
+import { onRlLine } from "./events/onRlLine.js";
 
-function onStartUp(username) {
-  console.log(`Welcome to the File Manager, ${username}`);
-  logCurrentPath();
-}
-
-function onRlLine(data) {
-  const command = data.trim();
-  if (command.startsWith("up")) {
-    goOneDirectoryUp();
-  }
-  logCurrentPath();
-}
-
-function onExit(username) {
-  console.log(`\nThank you for using File Manager, ${username} , goodbye!`);
-  process.exit();
-}
-
-function runApp() {
+function main() {
   const defaultUsername = "anonymous";
   const username =
     process.argv
@@ -36,8 +19,7 @@ function runApp() {
   });
 
   rl.on("line", onRlLine);
-
   process.on("exit", () => onExit(username));
 }
 
-runApp();
+main();

@@ -1,4 +1,4 @@
-export const Errors = Object.freeze({
-  operationError: "Operation failed",
-  inputError: "Invalid input",
-});
+export const Errors = {
+  operationError: () => console.error('Operation failed'),
+  inputError: () => console.error("Invalid input"),
+};
