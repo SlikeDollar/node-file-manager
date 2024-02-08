@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path';
 import { Errors } from '../constants/errors.js';
-import { checkIfPathExists } from '../helpers/check-if-path-exists.js';
+import { checkIfPathExists } from "../helpers/checkIfPathExists.js";
 import { toAbsoultePath } from '../helpers/toAbsolutePath.js';
 
 export async function mv({ args }) {

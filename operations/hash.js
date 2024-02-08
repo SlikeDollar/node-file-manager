@@ -1,8 +1,8 @@
 import crypto from "crypto";
 import fs from "fs";
-import { cwd, stdout } from "process";
+import { stdout } from "process";
 import { Errors } from "../constants/errors.js";
-import { checkIfPathExists } from "../helpers/check-if-path-exists.js";
+import { checkIfPathExists } from "../helpers/checkIfPathExists.js";
 import { toAbsoultePath } from "../helpers/toAbsolutePath.js";
 import { checkArgumentsAmount } from "../helpers/checkArgumentsAmount.js";
 

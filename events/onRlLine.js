@@ -1,5 +1,5 @@
 import { Errors } from "../constants/errors.js";
-import { logCurrentPath } from "../helpers/log-current-path.js";
+import { logCurrentPath } from "../helpers/logCurrentPath.js";
 import { parseCommand } from "../helpers/parseCommand.js";
 import { operations } from "../operations/operations.js";
 

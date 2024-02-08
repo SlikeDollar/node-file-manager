@@ -1,5 +1,5 @@
 import { Errors } from "../constants/errors.js";
-import { checkIfPathExists } from "../helpers/check-if-path-exists.js";
+import { checkIfPathExists } from "../helpers/checkIfPathExists.js";
 import { toAbsoultePath } from "../helpers/toAbsolutePath.js";
 import { isDirectory } from "../helpers/isDirectory.js";
 import { checkArgumentsAmount } from "../helpers/checkArgumentsAmount.js";

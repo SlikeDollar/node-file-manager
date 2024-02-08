@@ -1,6 +1,6 @@
 import { createBrotliDecompress } from "zlib";
 import { Errors } from "../constants/errors.js";
-import { checkIfPathExists } from "../helpers/check-if-path-exists.js";
+import { checkIfPathExists } from "../helpers/checkIfPathExists.js";
 import fs from "fs";
 import { checkArgumentsAmount } from "../helpers/checkArgumentsAmount.js";
 import { toAbsoultePath } from "../helpers/toAbsolutePath.js";

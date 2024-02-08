@@ -1,13 +1,13 @@
 import { stdout } from "process";
 import { Errors } from "../constants/errors.js";
-import { checkIfPathExists } from "../helpers/check-if-path-exists.js";
 import { createReadStream } from "fs";
 import { toAbsoultePath } from "../helpers/toAbsolutePath.js";
 import { isFile } from "../helpers/isFile.js";
 import { checkArgumentsAmount } from "../helpers/checkArgumentsAmount.js";
+import { checkIfPathExists } from "../helpers/checkIfPathExists.js";
 
 export async function cat({ args }) {
-  if (!checkArgumentsAmount(args?.length || 0, 1)) return;
+  if (!checkArgumentsAmount(args.length, 1)) return;
   const pathToFile = toAbsoultePath(args[0]);
 
   if (
