@@ -1,24 +1,18 @@
 import fs from "fs/promises";
 import { Errors } from "../constants/errors.js";
-import path from "path";
 import { checkIfPathExists } from "../helpers/check-if-path-exists.js";
-import { cwd } from "process";
+import { toAbsoultePath } from "../helpers/toAbsolutePath.js";
+import { checkArgumentsAmount } from "../helpers/checkArgumentsAmount.js";
 
-export async function rm(args) {
-  if (args) {
-    let filePath = args[0];
-    if (!path.isAbsolute(filePath)) {
-      filePath = path.join(cwd(), filePath);
-    }
+export async function rm({ args }) {
+  if (!checkArgumentsAmount(args.length, 1)) return
+  const filePath = toAbsoultePath(args[0]);
 
-    if (!(await checkIfPathExists(filePath))) {
-      Errors.operationError();
-      return;
-    }
-
-    return fs.rm(filePath)
-      .catch(() => Errors.operationError());
+  if (!(await checkIfPathExists(filePath))) {
+    Errors.operationError();
+    return;
   }
 
-  Errors.inputError();
+  return fs.rm(filePath)
+    .catch(() => Errors.operationError());
 }

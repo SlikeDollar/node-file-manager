@@ -1,23 +1,12 @@
 import fs from 'fs'
 import path from 'path';
-import { cwd } from 'process';
 import { Errors } from '../constants/errors.js';
 import { checkIfPathExists } from '../helpers/check-if-path-exists.js';
+import { toAbsoultePath } from '../helpers/toAbsolutePath.js';
 
-export async function mv(args) {
-  let [filePath, dirPath] = args;
-  if (!filePath || !dirPath) {
-    Errors.inputError();
-    return;
-  }
-
-  if (!path.isAbsolute(filePath)) {
-    filePath = path.join(cwd(), filePath);
-  }
-
-  if (!path.isAbsolute(dirPath)) {
-    dirPath = path.join(cwd(), dirPath);
-  }
+export async function mv({ args }) {
+  if (!checkArgumentsAmount(args.length, 2)) return;
+  const [filePath, dirPath] = args.map(path => toAbsoultePath(path));
 
   if (
     !(await checkIfPathExists(filePath)) ||
@@ -33,6 +22,6 @@ export async function mv(args) {
   );
 
   readStream.pipe(writeStream);
-  fs.promises.rm(filePath, {recursive: true})
+  await fs.promises.rm(filePath, { recursive: true })
     .catch(() => Errors.operationError());
 }

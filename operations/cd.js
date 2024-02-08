@@ -1,29 +1,22 @@
-import { cwd } from "process";
 import { Errors } from "../constants/errors.js";
 import { checkIfPathExists } from "../helpers/check-if-path-exists.js";
-import fs from "fs/promises";
-import path from "path";
+import { toAbsoultePath } from "../helpers/toAbsolutePath.js";
+import { isDirectory } from "../helpers/isDirectory.js";
+import { checkArgumentsAmount } from "../helpers/checkArgumentsAmount.js";
 
-export async function cd(args) {
-  if (args) {
-    let dirPath = args[0];
-    if (!path.isAbsolute(dirPath)) {
-      dirPath = path.join(cwd(), dirPath);
-    }
+export async function cd({ args }) {
+  if (!checkArgumentsAmount(args.length, 1)) return;
+  const dirPath = toAbsoultePath(args[0]);
 
-    if (!(await checkIfPathExists(dirPath))) {
-      Errors.operationError();
-      return;
-    }
-
-    if (!(await fs.stat(dirPath)).isDirectory()) {
-      Errors.inputError();
-      return;
-    }
-
-    process.chdir(dirPath);
+  if (!(await checkIfPathExists(dirPath))) {
+    Errors.operationError();
     return;
   }
 
-  Errors.inputError();
+  if (! await isDirectory(dirPath)) {
+    Errors.inputError();
+    return;
+  }
+
+  process.chdir(dirPath);
 }

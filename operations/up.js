@@ -1,9 +1,5 @@
-import path from 'path';
+import { cd } from './cd.js';
 
-export function goOneDirectoryUp() {
-  const currentDir = process.cwd();
-  const parentDir = path.resolve(currentDir, '..');
-  if (currentDir !== parentDir) {
-    process.chdir(parentDir);
-  }
+export async function goOneDirectoryUp() {
+  await cd({ args: ['..'] });
 }

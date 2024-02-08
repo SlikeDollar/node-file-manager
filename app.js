@@ -1,40 +1,10 @@
-import { cwd, stdin, stdout } from "process";
+import { stdin, stdout } from "process";
 import * as readline from "node:readline/promises";
-import { logCurrentPath } from "./helpers/log-current-path.js";
-import { operations } from "./operations/operations.js";
-import { Errors } from "./constants/errors.js";
+import { onStartUp } from "./events/onStartUp.js";
+import { onExit } from "./events/onExit.js";
+import { onRlLine } from "./events/onRlLine.js";
 
-function onStartUp(username) {
-  console.log(`Welcome to the File Manager, ${username}`);
-  logCurrentPath();
-}
-
-function parseCommnad(data) {
-  const command = data.trim().split(/\s/g);
-  return {
-    operation: command[0],
-    args: command.slice(1),
-  }
-}
-
-async function onRlLine(data) {
-  const command = parseCommnad(data);
-  if (operations.get(command.operation)) {
-    const operationFunc = operations.get(command.operation);
-    operationFunc(command.args);
-  } else {
-    Errors.inputError();
-  }
-
-  logCurrentPath();
-}
-
-function onExit(username) {
-  console.log(`\nThank you for using File Manager, ${username} , goodbye!`);
-  process.exit();
-}
-
-function runApp() {
+function main() {
   const defaultUsername = "anonymous";
   const username =
     process.argv
@@ -49,8 +19,7 @@ function runApp() {
   });
 
   rl.on("line", onRlLine);
-
   process.on("exit", () => onExit(username));
 }
 
-runApp();
+main();

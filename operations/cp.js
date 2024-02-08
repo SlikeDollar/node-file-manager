@@ -2,22 +2,12 @@ import path from "path";
 import fs from "fs";
 import { Errors } from "../constants/errors.js";
 import { checkIfPathExists } from "../helpers/check-if-path-exists.js";
-import { cwd } from "process";
+import { toAbsoultePath } from "../helpers/toAbsolutePath.js";
+import { checkArgumentsAmount } from "../helpers/checkArgumentsAmount.js";
 
-export async function cp(args) {
-  let [filePath, dirPath] = args;
-  if (!filePath || !dirPath) {
-    Errors.inputError();
-    return;
-  }
-
-  if (!path.isAbsolute(filePath)) {
-    filePath = path.join(cwd(), filePath);
-  }
-
-  if (!path.isAbsolute(dirPath)) {
-    dirPath = path.join(cwd(), dirPath);
-  }
+export async function cp({ args }) {
+  if (!checkArgumentsAmount(args.length, 2)) return;
+  const [filePath, dirPath] = args.map(path => toAbsoultePath(path));
 
   if (
     !(await checkIfPathExists(filePath)) ||
